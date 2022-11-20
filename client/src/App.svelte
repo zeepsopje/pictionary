@@ -2,12 +2,26 @@
 	import Canvas from './lib/Canvas.svelte';
 	import PlayerList from './lib/PlayerList.svelte';
 	import Chat from './lib/Chat.svelte';
+	import { user } from './lib/stores';
+
+	let username;
+
+	function setUser(value) {
+		user.set(username);
+	}
 </script>
 
 <div class="root">
-	<PlayerList />
-	<Canvas />
-	<Chat />
+	{#if $user}
+		<PlayerList />
+		<Canvas />
+		<Chat />
+	{:else}
+		<form on:submit|preventDefault={setUser}>
+			<input type="text" required bind:value={username} />
+			<input type="submit" />
+		</form>
+	{/if}
 </div>
 
 <style>

@@ -1,17 +1,32 @@
 <script>
+	import { sendChat, chat } from './stores';
+
+	let message = '';
 	let messages = [];
+
+	chat.subscribe(value => {
+		messages = value;
+	});
+
+	function onSubmit() {
+		sendChat(message);
+	}
 </script>
 
 <div class="chat">
 	<h3>Chat</h3>
 	<div class="messages">
-		{#each messages as {username, message}}
+		{#each messages as {user, message}}
 			<div class="message">
-				<h6>{username}</h6>
+				<h6>{user}</h6>
 				<p>{message}</p>
 			</div>
 		{/each}
 	</div>
+	<form on:submit|preventDefault={onSubmit}>
+		<input name="message" type="text" bind:value={message} />
+		<input type="submit" />
+	</form>
 </div>
 
 <style>
